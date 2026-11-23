@@ -161,11 +161,15 @@ export default function Perfil() {
     <div className="space-y-5 px-4 pb-8 pt-4">
       <section className="card overflow-hidden">
         <div className="flex items-center gap-4 bg-gradient-to-br from-primary-soft to-surface p-4">
-          <Avatar name={ME.name} hue={14} size="lg" />
+          <Avatar name={ME.name} hue={14} size={72} photo={ME.picture} />
           <div className="min-w-0">
             <h1 className="font-display text-[1.5rem] font-bold leading-tight">{ME.name}, {ME.age} anos</h1>
             <p className="text-[0.95rem] text-muted">{ME.block} • {ME.area}</p>
-            <span className="pill pill-green mt-2"><BadgeCheck size={15} aria-hidden="true" /> Vizinha Verificada</span>
+            {ME.email && <p className="truncate text-sm text-muted">{ME.email}</p>}
+            <span className="pill pill-green mt-2"><BadgeCheck size={15} aria-hidden="true" /> {ME.f === false ? 'Vizinho Verificado' : 'Vizinha Verificada'}</span>
+            <button type="button" onClick={() => window.dispatchEvent(new Event('apoiai:logout'))} className="mt-2 block text-sm font-bold text-primary-strong underline">
+              Sair da conta
+            </button>
           </div>
         </div>
         <ul className="divide-y divide-line px-4 py-1 text-[0.95rem]" aria-label="Verificações concluídas">

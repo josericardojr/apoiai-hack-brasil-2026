@@ -82,7 +82,7 @@ return (
             onClick={() => openChat(c.reqId)}
             className="card flex w-full items-center gap-3 p-3 text-left"
           >
-            <Avatar name={who} hue={c.role === 'helper' ? r.hue : c.helper.hue} size="sm" />
+            <Avatar name={who} hue={c.role === 'helper' ? r.hue : c.helper.hue} size={36} />
             <span className="min-w-0 flex-1">
               <span className="block truncate font-bold">
                 {c.role === 'helper' ? `Conversa com ${who}` : `${who} respondeu seu pedido`}

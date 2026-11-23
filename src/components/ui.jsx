@@ -78,9 +78,9 @@ function resolvePortraitUrl(cleanName, age, female) {
   return pool[Math.abs(hash) % pool.length]
 }
 
-export function Avatar({ name = 'Vizinho', hue = 20, size = 48, age, female }) {
+export function Avatar({ name = 'Vizinho', hue = 20, size = 48, age, female, photo }) {
   const cleanName = String(name || '').replace(/\s*\(você\)\s*/gi, '').trim()
-  const photoUrl = resolvePortraitUrl(cleanName, age, female)
+  const photoUrl = photo || resolvePortraitUrl(cleanName, age, female)
   const parts = cleanName.split(/\s+/).filter(Boolean)
   const initialsText = parts.slice(0, 2).map((n) => n[0]?.toUpperCase() || '').join('') || 'V'
 

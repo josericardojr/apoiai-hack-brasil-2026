@@ -367,7 +367,7 @@ export default function App() {
           lastReply: '',
           messages: [
             msg('sys', SYS_SAFE_CHAT),
-            msg('them', `Oi, ${ME.first}! ${req?.kind === 'oferta' || item?.kind === 'oferta' || post?.kind === 'oferta' ? 'Vi a sua oferta e gostaria de aceitar sua ajuda.' : 'Vi o seu pedido e posso ajudar.'} Sou ${h.name}, do ${h.place}. Qual horário fica bom para você?`),
+            msg('them', `Oi, ${ME.first}! ${req.kind === 'oferta' ? 'Vi a sua oferta e gostaria de aceitar sua ajuda.' : 'Vi o seu pedido e posso ajudar.'} Sou ${h.name}, do ${h.place}. Qual horário fica bom para você?`),
           ],
         },
       }))
