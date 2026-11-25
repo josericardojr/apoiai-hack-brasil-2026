@@ -25,7 +25,7 @@ import { useApp } from '../AppContext.js'
 import { Avatar, Switch, SectionTitle } from '../components/ui.jsx'
 import { SEALS, SKILLS, DAYS, PERIODS, ME, COMMUNITY_PERKS } from '../data.js'
 import { SEAL_ICON } from '../icons.js'
-import { fmtHours } from '../lib/format.js'
+import { fmtHours, formatPhoneBR } from '../lib/format.js'
 
 const VALIDATED_BY = [
   { name: 'Carlos Menezes', role: 'Vizinho de prédio' },
@@ -437,6 +437,20 @@ export default function Perfil() {
         <label htmlFor="trusted" className="block text-sm font-bold uppercase tracking-wide text-muted">Contato de confiança</label>
         <div className="mt-1 grid gap-2">
           <input id="trusted" className="field !py-2" value={profile.trusted} onChange={(e) => setProfile((p) => ({ ...p, trusted: e.target.value }))} placeholder="Nome e sobrenome (ex.: Ana Alves)" />
+        </div>
+        <label htmlFor="trusted-phone" className="mt-3 block text-sm font-bold uppercase tracking-wide text-muted">Telefone do contato de confiança</label>
+        <div className="mt-1 grid gap-2">
+          <input
+            id="trusted-phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            maxLength={15}
+            className="field !py-2"
+            value={profile.trustedPhone || ''}
+            onChange={(e) => setProfile((p) => ({ ...p, trustedPhone: formatPhoneBR(e.target.value) }))}
+            placeholder="(11) 99999-9999"
+          />
         </div>
         <p className="mt-1 text-[0.85rem] text-muted">Recebe apenas alertas de emergência. Não precisa ter o aplicativo.</p>
         <div className="mt-3 divide-y divide-line">

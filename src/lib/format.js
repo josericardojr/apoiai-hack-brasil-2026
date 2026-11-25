@@ -26,6 +26,19 @@ export function fmtMinutes(m = 30) {
   return `${m} min`
 }
 
+export function phoneDigits(value = '') {
+  return String(value || '').replace(/\D/g, '').slice(0, 11)
+}
+
+export function formatPhoneBR(value = '') {
+  const d = phoneDigits(value)
+  if (!d) return ''
+  if (d.length <= 2) return `(${d}`
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
+}
+
 export function maskSensitive(text = '') {
   const phoneRegex = /(\+?\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}/g
   let masked = false

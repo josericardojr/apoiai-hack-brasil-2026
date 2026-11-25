@@ -3,7 +3,7 @@ import { ArrowLeft, Lock, Send, ShieldCheck, Share2, Flag, Siren, Check, Calenda
 import { useApp } from '../AppContext.js'
 import { Avatar, Sheet } from '../components/ui.jsx'
 import { CAT_LABEL } from '../data.js'
-import { fmtCredit } from '../lib/format.js'
+import { fmtCredit, phoneDigits } from '../lib/format.js'
 
 const STEPS = ['Aceite', 'Horário', 'Conclusão']
 const QUICK = ['Posso ir agora?', 'Tudo certo por aí?', 'Obrigada!', 'Chego em 10 minutos']
@@ -28,6 +28,8 @@ export default function Chat({ chat, request }) {
   const helper = chat.role === 'helper'
   const who = helper ? { name: request.name, age: request.age, f: request.f, hue: request.hue } : chat.helper
   const trusted = profile.trusted.split(/[,(]/)[0].trim() || 'seu contato de confiança'
+  const trustedTel = phoneDigits(profile.trustedPhone)
+  const hasTrustedPhone = trustedTel.length >= 10
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
@@ -288,6 +290,12 @@ export default function Chat({ chat, request }) {
             <a href="tel:192" className="btn btn-danger flex-col !gap-0"><PhoneCall size={22} aria-hidden="true" /> SAMU 192</a>
             <a href="tel:190" className="btn btn-danger flex-col !gap-0"><PhoneCall size={22} aria-hidden="true" /> Polícia 190</a>
           </div>
+          {hasTrustedPhone && (
+            <a href={`tel:${trustedTel}`} className="btn btn-primary mt-3 w-full">
+              <PhoneCall size={20} className="shrink-0" aria-hidden="true" />
+              Ligar para {trusted} ({profile.trustedPhone})
+            </a>
+          )}
           <button
             type="button"
             className="btn btn-outline mt-3 w-full text-left"

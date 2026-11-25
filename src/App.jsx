@@ -114,6 +114,7 @@ export default function App() {
     extra: [],
     slots: { 'Seg-Tarde': true, 'Qua-Tarde': true, 'Ter-Noite': true, 'Sáb-Manhã': true },
     trusted: 'Ana Alves',
+    trustedPhone: '',
     privacy: { wall: true, alerts: true, inactivityAlert: true },
   })
 
