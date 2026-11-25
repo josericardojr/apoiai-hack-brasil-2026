@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Lock, Send, ShieldCheck, Share2, Flag, Siren, Check, CalendarClock, PhoneCall, CheckCircle2, UserCheck, XCircle, Scale, BellRing, MapPin } from 'lucide-react'
+import { ArrowLeft, Lock, Send, ShieldCheck, Share2, Flag, Siren, Check, CalendarClock, PhoneCall, CheckCircle2, UserCheck, XCircle, Scale, BellRing, MapPin, Star, Award, Users, FileCheck2, Phone, Home as HomeIcon, ChevronRight, Heart } from 'lucide-react'
 import { useApp } from '../AppContext.js'
-import { Avatar, Sheet } from '../components/ui.jsx'
+import { Avatar, Sheet, VerifiedBadge } from '../components/ui.jsx'
 import { CAT_LABEL } from '../data.js'
 import { fmtCredit, phoneDigits } from '../lib/format.js'
 
@@ -15,9 +15,14 @@ function timeOptions(r) {
 }
 
 export default function Chat({ chat, request }) {
-  const { closeChat, chatSend, chatSchedule, chatShare, chatReport, chatSOS, requestFinish, profile } = useApp()
+  const { closeChat, chatSend, chatSchedule, chatShare, chatReport, chatSOS, requestFinish, profile, gratitude } = useApp()
   const [draft, setDraft] = useState('')
-  const [sheet, setSheet] = useState(null) // 'time' | 'report' | 'sos'
+  const [sheet, setSheet] = useState(null) // 'time' | 'report' | 'sos' | 'profile'
+  const [reviewsLimit, setReviewsLimit] = useState(2)
+  const openProfile = () => {
+    setReviewsLimit(2)
+    setSheet('profile')
+  }
   const [time, setTime] = useState('')
   const [customTime, setCustomTime] = useState('')
   const [place, setPlace] = useState(PLACES[0])
@@ -26,7 +31,27 @@ export default function Chat({ chat, request }) {
   const endRef = useRef(null)
 
   const helper = chat.role === 'helper'
-  const who = helper ? { name: request.name, age: request.age, f: request.f, hue: request.hue } : chat.helper
+  const who = helper
+    ? {
+        name: request.name,
+        age: request.age,
+        f: request.f,
+        hue: request.hue,
+        place: request.place,
+        validators: request.validators || [],
+        seals: request.seals || [],
+      }
+    : chat.helper
+  const muralReviews = (gratitude || []).filter((g) => g.to === who.name)
+  const extraReviews = (who.reviews || []).filter((r) => !muralReviews.some((m) => m.text === r.text))
+  const whoReviews = [...muralReviews, ...extraReviews]
+  const visibleReviews = whoReviews.slice(0, reviewsLimit)
+  const remainingReviews = Math.max(0, whoReviews.length - visibleReviews.length)
+  const whoValidators = who.validators || []
+  const whoSeals = who.seals || []
+  const whoRating = who.rating ?? 4.9
+  const whoHelpedCount = who.helpedCount ?? Math.max(3, whoValidators.length * 2)
+  const canDecide = !helper && chat.step === 0 && !chat.declined
   const trusted = profile.trusted.split(/[,(]/)[0].trim() || 'seu contato de confiança'
   const trustedTel = phoneDigits(profile.trustedPhone)
   const hasTrustedPhone = trustedTel.length >= 10
@@ -61,11 +86,20 @@ export default function Chat({ chat, request }) {
         <button type="button" onClick={closeChat} aria-label="Voltar" className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full hover:bg-primary-soft">
           <ArrowLeft size={26} />
         </button>
-        <Avatar name={who.name} hue={who.hue} size="sm" />
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-bold leading-tight">{who.name}, {who.age}</p>
-          <p className="flex items-center gap-1 text-[0.8rem] text-secondary"><Lock size={12} aria-hidden="true" /> Chat seguro</p>
-        </div>
+        <button
+          type="button"
+          onClick={openProfile}
+          aria-label={`Ver perfil e verificações de ${who.name}`}
+          className="flex min-w-0 flex-1 items-center gap-2 rounded-xl px-1 py-1 text-left hover:bg-primary-soft"
+        >
+          <Avatar name={who.name} hue={who.hue} size={40} age={who.age} female={who.f} />
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-bold leading-tight">{who.name}, {who.age}</p>
+            <p className="flex items-center gap-1 text-[0.78rem] font-semibold text-primary-strong">
+              <ShieldCheck size={12} aria-hidden="true" /> Ver perfil e verificações
+            </p>
+          </div>
+        </button>
         <button
           type="button"
           onClick={() => setSheet('sos')}
@@ -83,6 +117,24 @@ export default function Chat({ chat, request }) {
           <p className="mt-0.5 line-clamp-3">{request.text}</p>
           <p className="mt-1 flex items-center gap-1 font-semibold"><MapPin size={14} aria-hidden="true" /> {request.when}</p>
         </div>
+
+        {canDecide && (
+          <button
+            type="button"
+            onClick={openProfile}
+            className="mx-3 mb-3 flex w-[calc(100%-1.5rem)] items-center gap-3 rounded-xl bg-secondary-soft p-3 text-left transition hover:brightness-95"
+            style={{ border: 'var(--bw) solid rgb(var(--c-secondary) / .5)' }}
+          >
+            <Avatar name={who.name} hue={who.hue} size={44} age={who.age} female={who.f} />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-secondary">Conheça quem quer ajudar antes de aceitar</p>
+              <p className="mt-0.5 text-[0.85rem] leading-snug text-ink">
+                <b>{who.name}</b> • {who.place || 'Vizinhança próxima'} • ★ {String(whoRating).replace('.', ',')} • {whoValidators.length} {whoValidators.length === 1 ? 'validação' : 'validações'}
+              </p>
+            </div>
+            <ChevronRight size={20} className="shrink-0 text-secondary" aria-hidden="true" />
+          </button>
+        )}
 
         <ol className="mx-3 mb-2 flex items-start justify-between" aria-label="Passos do combinado">
           {STEPS.map((s, i) => {
@@ -280,6 +332,166 @@ export default function Chat({ chat, request }) {
           >
             <Flag size={20} aria-hidden="true" /> Enviar relato e encerrar conversa
           </button>
+        </Sheet>
+      )}
+
+      {sheet === 'profile' && (
+        <Sheet title={`Perfil de ${who.name}`} onClose={() => setSheet(null)}>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3.5 rounded-2xl bg-primary-soft p-3.5">
+              <Avatar name={who.name} hue={who.hue} size={64} age={who.age} female={who.f} />
+              <div className="min-w-0 flex-1">
+                <p className="font-display text-xl font-bold leading-tight">{who.name}, {who.age} anos</p>
+                <p className="mt-0.5 flex items-center gap-1 text-sm text-muted">
+                  <MapPin size={14} aria-hidden="true" /> {who.place || 'Vizinhança próxima'}{who.since ? ` • ${who.since}` : ''}
+                </p>
+                <div className="mt-1.5">
+                  <VerifiedBadge f={who.f} />
+                </div>
+              </div>
+            </div>
+
+            {who.bio && (
+              <p className="text-[0.96rem] leading-relaxed text-ink">{who.bio}</p>
+            )}
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-xl bg-surface p-2.5" style={{ border: 'var(--bw) solid rgb(var(--c-line))' }}>
+                <p className="flex items-center justify-center gap-1 text-lg font-bold text-primary-strong">
+                  <Star size={16} className="fill-current" aria-hidden="true" /> {String(whoRating).replace('.', ',')}
+                </p>
+                <p className="text-xs text-muted">Avaliação</p>
+              </div>
+              <div className="rounded-xl bg-surface p-2.5" style={{ border: 'var(--bw) solid rgb(var(--c-line))' }}>
+                <p className="text-lg font-bold text-secondary">{whoHelpedCount}</p>
+                <p className="text-xs text-muted">Ajudas feitas</p>
+              </div>
+              <div className="rounded-xl bg-surface p-2.5" style={{ border: 'var(--bw) solid rgb(var(--c-line))' }}>
+                <p className="text-lg font-bold text-ink">{whoValidators.length}</p>
+                <p className="text-xs text-muted">Validações</p>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-surface p-3" style={{ border: 'var(--bw) solid rgb(var(--c-line))' }}>
+              <p className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+                <ShieldCheck size={14} className="text-secondary" aria-hidden="true" /> Verificações de segurança
+              </p>
+              <ul className="divide-y divide-line text-[0.9rem]">
+                {[
+                  ['Documento com foto conferido', FileCheck2],
+                  ['Telefone validado por código SMS', Phone],
+                  ['Morador confirmado na vizinhança', HomeIcon],
+                ].map(([label, Icon]) => (
+                  <li key={label} className="flex items-center gap-2 py-2">
+                    <Icon size={16} className="shrink-0 text-secondary" aria-hidden="true" />
+                    <span className="flex-1">{label}</span>
+                    <Check size={16} className="text-secondary" aria-label="concluído" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {whoSeals.length > 0 && (
+              <div>
+                <p className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+                  <Award size={14} aria-hidden="true" /> Selos de confiança
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {whoSeals.map((s) => (
+                    <span key={s} className="pill pill-green">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {whoValidators.length > 0 && (
+              <div>
+                <p className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+                  <Users size={14} aria-hidden="true" /> Validado por {whoValidators.length} vizinhos
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {whoValidators.map((v) => (
+                    <span key={v} className="rounded-full bg-surface px-2.5 py-1 text-xs font-semibold" style={{ border: '1px solid rgb(var(--c-line))' }}>
+                      {v}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {whoReviews.length > 0 && (
+              <div>
+                <p className="mb-1.5 flex items-center justify-between gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+                  <span className="flex items-center gap-1.5">
+                    <Heart size={14} aria-hidden="true" /> Agradecimentos recentes na vizinhança
+                  </span>
+                  <span className="font-normal normal-case">
+                    {visibleReviews.length} de {whoReviews.length}
+                  </span>
+                </p>
+                <ul className="space-y-2">
+                  {visibleReviews.map((g) => (
+                    <li key={g.id} className="rounded-xl bg-secondary-soft p-3 text-[0.9rem] leading-snug">
+                      <p>"{g.text}"</p>
+                      <p className="mt-1 text-xs font-semibold text-secondary">— {g.from} • {g.ago}</p>
+                    </li>
+                  ))}
+                </ul>
+                {remainingReviews > 0 ? (
+                  <button
+                    type="button"
+                    onClick={() => setReviewsLimit((n) => n + 2)}
+                    className="btn btn-outline mt-2.5 w-full !min-h-[2.75rem] text-sm"
+                  >
+                    Carregar agradecimentos mais antigos ({remainingReviews} {remainingReviews === 1 ? 'restante' : 'restantes'})
+                  </button>
+                ) : (
+                  whoReviews.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => setReviewsLimit(2)}
+                      className="mt-2 block w-full text-center text-xs font-bold text-muted underline"
+                    >
+                      Mostrar apenas os mais recentes
+                    </button>
+                  )
+                )}
+              </div>
+            )}
+
+            <p className="flex items-center gap-1.5 text-xs text-muted">
+              <Lock size={13} className="shrink-0" aria-hidden="true" /> Por privacidade, telefone e endereço exato não são exibidos.
+            </p>
+
+            {canDecide ? (
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  className="btn btn-primary w-full"
+                  onClick={() => {
+                    chatSchedule(chat.reqId, { accept: true })
+                    setSheet(null)
+                  }}
+                >
+                  <UserCheck size={18} aria-hidden="true" /> Aceitar ajuda
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline w-full"
+                  onClick={() => {
+                    chatSchedule(chat.reqId, { decline: true })
+                    setSheet(null)
+                  }}
+                >
+                  <XCircle size={18} aria-hidden="true" /> Não aceitar
+                </button>
+              </div>
+            ) : (
+              <button type="button" className="btn btn-outline w-full" onClick={() => setSheet(null)}>
+                Voltar ao chat
+              </button>
+            )}
+          </div>
         </Sheet>
       )}
 

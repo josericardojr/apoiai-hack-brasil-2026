@@ -88,9 +88,63 @@ export const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
 export const PERIODS = ['Manhã', 'Tarde', 'Noite']
 
 export const HELPER_POOL = [
-  { name: 'Lucas Rocha', age: 24, f: false, hue: 150, validators: ['Helena Prado', 'Beatriz Campos'], seals: ['Paciência Digital', 'Pontual'], place: 'Bloco D' },
-  { name: 'Beatriz Campos', age: 29, f: true, hue: 330, validators: ['Helena Prado', 'Marta Souza', 'Zilda Costa', 'Cláudia Nogueira'], seals: ['Gentil', 'Confirmada por 4 vizinhos'], place: 'Bloco A' },
-  { name: 'Carlos Menezes', age: 45, f: false, hue: 210, validators: ['Marta Souza', 'Helena Prado', 'Antônio Mendes', 'Joaquim Ferreira', 'Roberto Dias', 'Beatriz Campos'], seals: ['Pontual', 'Confirmado por 6 vizinhos'], place: 'Bloco B' },
+  {
+    name: 'Lucas Rocha',
+    age: 24,
+    f: false,
+    hue: 150,
+    validators: ['Helena Prado', 'Beatriz Campos'],
+    seals: ['Paciência Digital', 'Pontual'],
+    place: 'Bloco D',
+    rating: 4.9,
+    helpedCount: 11,
+    since: 'Na rede há 8 meses',
+    bio: 'Estudante de computação, mora no Bloco D há 3 anos. Ajuda com celular, compras e pequenos recados.',
+    reviews: [
+      { id: 'rev-l1', from: 'Helena Prado', text: 'Me ajudou a organizar as fotos dos meus netos no celular e anotou tudo no papel para eu não esquecer.', ago: 'há 1 semana' },
+      { id: 'rev-l2', from: 'Joaquim Ferreira', text: 'Trocou a lâmpada da minha cozinha rapidinho e ainda conferiu se o interruptor estava seguro.', ago: 'há 2 semanas' },
+      { id: 'rev-l3', from: 'Zilda Costa', text: 'Configurou o Wi-Fi do meu tablet com muita calma e educação. Recomendo demais!', ago: 'há 1 mês' },
+      { id: 'rev-l4', from: 'Antônio Mendes', text: 'Buscou meu remédio na farmácia num dia de chuva e não quis aceitar nada em troca.', ago: 'há 2 meses' },
+    ],
+  },
+  {
+    name: 'Beatriz Campos',
+    age: 29,
+    f: true,
+    hue: 330,
+    validators: ['Helena Prado', 'Marta Souza', 'Zilda Costa', 'Cláudia Nogueira'],
+    seals: ['Gentil', 'Paciência Digital', 'Confirmada por 4 vizinhos'],
+    place: 'Bloco A',
+    rating: 5.0,
+    helpedCount: 16,
+    since: 'Na rede há 1 ano',
+    bio: 'Professora e moradora do Bloco A. Tem muita paciência para ensinar tecnologia e fazer companhia.',
+    reviews: [
+      { id: 'rev-b1', from: 'Marta Souza', text: 'Veio tomar chá comigo e me ensinou a usar a videochamada. Uma querida!', ago: 'há 5 dias' },
+      { id: 'rev-b2', from: 'Cláudia Nogueira', text: 'Me acompanhou até a clínica de fisioterapia e esperou comigo na recepção.', ago: 'há 2 semanas' },
+      { id: 'rev-b3', from: 'Helena Prado', text: 'Muito pontual e atenciosa. Me ajudou a identificar uma mensagem falsa no WhatsApp.', ago: 'há 1 mês' },
+      { id: 'rev-b4', from: 'Neide Vasconcelos', text: 'Foi comigo à padaria de braço dado, sem nenhuma pressa. Me senti muito segura.', ago: 'há 2 meses' },
+    ],
+  },
+  {
+    name: 'Carlos Menezes',
+    age: 45,
+    f: false,
+    hue: 210,
+    validators: ['Marta Souza', 'Helena Prado', 'Antônio Mendes', 'Joaquim Ferreira', 'Roberto Dias', 'Beatriz Campos'],
+    seals: ['Pontual', 'Coração de Vizinho', 'Confirmado por 6 vizinhos'],
+    place: 'Bloco B',
+    rating: 5.0,
+    helpedCount: 23,
+    since: 'Na rede há 2 anos',
+    bio: 'Morador do Bloco B há 9 anos. Ajuda com reparos, caronas solidárias e visitas na vizinhança.',
+    reviews: [
+      { id: 'rev-c1', from: 'Joaquim Ferreira', text: 'Consertou o vazamento da pia em 20 minutos e deixou tudo limpinho.', ago: 'há 1 semana' },
+      { id: 'rev-c2', from: 'Raimundo Alves', text: 'Me deu carona na volta do supermercado e ajudou a subir todas as sacolas.', ago: 'há 3 semanas' },
+      { id: 'rev-c3', from: 'Antônio Mendes', text: 'Vizinho de ouro. Sempre chega no horário combinado e trata todo mundo com respeito.', ago: 'há 1 mês' },
+      { id: 'rev-c4', from: 'Helena Prado', text: 'Montou a estante pequena da minha sala e ainda ajustou a porta do armário.', ago: 'há 2 meses' },
+    ],
+  },
 ]
 
 export const REPLIES = {
