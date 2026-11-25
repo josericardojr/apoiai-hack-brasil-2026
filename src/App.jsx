@@ -18,10 +18,21 @@ import {
 } from './data.js'
 
 const A11Y_KEY = 'apoiai:a11y'
+const KNOWN_KEY = 'apoiai:known'
 const nowT = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 const mid = () => Math.random().toString(36).slice(2, 10)
 const msg = (from, text) => ({ id: mid(), from, text, t: nowT() })
 const SYS_SAFE_CHAT = 'Chat seguro: telefone e endereço exato ficam ocultos. Combine encontros em áreas comuns.'
+
+function loadKnown() {
+  try {
+    const v = JSON.parse(localStorage.getItem(KNOWN_KEY))
+    if (v && typeof v === 'object') return v
+  } catch {
+    /* ignore */
+  }
+  return {}
+}
 
 function loadA11y() {
   try {
@@ -109,6 +120,7 @@ export default function App() {
   const [eventsGoing, setEventsGoing] = useState({})
   const [objectsReq, setObjectsReq] = useState({})
   const [ownObjects, setOwnObjects] = useState([])
+  const [knownPersonally, setKnownPersonally] = useState(loadKnown)
   const [profile, setProfile] = useState({
     skills: ['Tecnologia e celular', 'Compras e farmácia', 'Companhia e conversa'],
     extra: [],
@@ -410,11 +422,31 @@ export default function App() {
     }
   }
 
+  const isKnownPersonally = (name) => !!knownPersonally[name]
+  const getKnownCount = (person) => (person?.knownCount ?? 3) + (person?.name && knownPersonally[person.name] ? 1 : 0)
+  const toggleKnownPersonally = (name) => {
+    if (!name) return
+    const next = !knownPersonally[name]
+    setKnownPersonally((prev) => {
+      const updated = { ...prev }
+      if (next) updated[name] = true
+      else delete updated[name]
+      try {
+        localStorage.setItem(KNOWN_KEY, JSON.stringify(updated))
+      } catch {
+        /* ignore */
+      }
+      return updated
+    })
+    notify(next ? `Você sinalizou que conhece ${name} pessoalmente.` : `Marcação de conhecido removida para ${name}.`)
+  }
+
   const unread = Object.values(chats).filter((c) => c.unread).length
   const ctx = {
     requests: requests.filter((r) => !r.hidden), chats, filters, setFilters, speech, ledger, badges, gratitude, profile, setProfile,
     openHelp, openChat, closeChat, chatSend, chatSchedule, chatShare, chatReport, chatSOS, requestFinish, commitCompletion,
     closeCompletion, goGratitude, evaluateHelper, publishRequest, eventsGoing, toggleEvent, objectsReq, toggleObject, ownObjects, addObject, removeObject,
+    knownPersonally, isKnownPersonally, getKnownCount, toggleKnownPersonally,
     notify, setTab, gratitudeRef,
   }
 

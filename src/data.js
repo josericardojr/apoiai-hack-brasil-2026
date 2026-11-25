@@ -93,9 +93,11 @@ export const HELPER_POOL = [
     age: 24,
     f: false,
     hue: 150,
+    distance: 450,
     validators: ['Helena Prado', 'Beatriz Campos'],
     seals: ['Paciência Digital', 'Pontual'],
     place: 'Bloco D',
+    knownCount: 5,
     rating: 4.9,
     helpedCount: 11,
     since: 'Na rede há 8 meses',
@@ -112,9 +114,11 @@ export const HELPER_POOL = [
     age: 29,
     f: true,
     hue: 330,
+    distance: 150,
     validators: ['Helena Prado', 'Marta Souza', 'Zilda Costa', 'Cláudia Nogueira'],
     seals: ['Gentil', 'Paciência Digital', 'Confirmada por 4 vizinhos'],
     place: 'Bloco A',
+    knownCount: 7,
     rating: 5.0,
     helpedCount: 16,
     since: 'Na rede há 1 ano',
@@ -131,9 +135,11 @@ export const HELPER_POOL = [
     age: 45,
     f: false,
     hue: 210,
+    distance: 220,
     validators: ['Marta Souza', 'Helena Prado', 'Antônio Mendes', 'Joaquim Ferreira', 'Roberto Dias', 'Beatriz Campos'],
     seals: ['Pontual', 'Coração de Vizinho', 'Confirmado por 6 vizinhos'],
     place: 'Bloco B',
+    knownCount: 9,
     rating: 5.0,
     helpedCount: 23,
     since: 'Na rede há 2 anos',
@@ -146,6 +152,45 @@ export const HELPER_POOL = [
     ],
   },
 ]
+
+const KNOWN_COUNT_BY_NAME = {
+  'Neide Vasconcelos': 8,
+  'Marta Souza': 11,
+  'Joaquim Ferreira': 6,
+  'Helena Prado': 5,
+  'Mariana Lima': 4,
+  'Antônio Mendes': 7,
+  'Cláudia Nogueira': 4,
+  'Zilda Costa': 3,
+  'Raimundo Alves': 5,
+}
+
+export const INITIAL_NEIGHBORS = (() => {
+  const map = new Map()
+  for (const h of HELPER_POOL) {
+    map.set(h.name, { ...h })
+  }
+  for (const r of INITIAL_REQUESTS) {
+    if (map.has(r.name)) continue
+    map.set(r.name, {
+      name: r.name,
+      age: r.age,
+      f: r.f,
+      hue: r.hue,
+      distance: r.distance,
+      place: r.place,
+      validators: r.validators || [],
+      seals: r.seals || [],
+      knownCount: KNOWN_COUNT_BY_NAME[r.name] ?? Math.max(2, (r.validators || []).length),
+      rating: 4.9,
+      helpedCount: Math.max(3, (r.validators || []).length * 2),
+      since: 'Morador da vizinhança',
+      bio: `${r.f ? 'Moradora' : 'Morador'} em ${r.place}. Participa da rede de apoio mútuo da ${ME.area}.`,
+      reviews: [],
+    })
+  }
+  return [...map.values()].filter((n) => n.distance <= 1000).sort((a, b) => a.distance - b.distance)
+})()
 
 export const REPLIES = {
   accept: ['Que bom ter você por aqui! Aceito sim, muito obrigada pela ajuda.', 'Oi! Que alegria, aceito a sua ajuda. Muito obrigado pelo apoio.'],

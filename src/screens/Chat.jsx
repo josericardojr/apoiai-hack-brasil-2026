@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Lock, Send, ShieldCheck, Share2, Flag, Siren, Check, CalendarClock, PhoneCall, CheckCircle2, UserCheck, XCircle, Scale, BellRing, MapPin, Star, Award, Users, FileCheck2, Phone, Home as HomeIcon, ChevronRight, Heart } from 'lucide-react'
 import { useApp } from '../AppContext.js'
 import { Avatar, Sheet, VerifiedBadge } from '../components/ui.jsx'
-import { CAT_LABEL } from '../data.js'
+import { CAT_LABEL, INITIAL_NEIGHBORS } from '../data.js'
 import { fmtCredit, phoneDigits } from '../lib/format.js'
 
 const STEPS = ['Aceite', 'Horário', 'Conclusão']
@@ -15,7 +15,7 @@ function timeOptions(r) {
 }
 
 export default function Chat({ chat, request }) {
-  const { closeChat, chatSend, chatSchedule, chatShare, chatReport, chatSOS, requestFinish, profile, gratitude } = useApp()
+  const { closeChat, chatSend, chatSchedule, chatShare, chatReport, chatSOS, requestFinish, profile, gratitude, isKnownPersonally, getKnownCount, toggleKnownPersonally } = useApp()
   const [draft, setDraft] = useState('')
   const [sheet, setSheet] = useState(null) // 'time' | 'report' | 'sos' | 'profile'
   const [reviewsLimit, setReviewsLimit] = useState(2)
@@ -51,6 +51,9 @@ export default function Chat({ chat, request }) {
   const whoSeals = who.seals || []
   const whoRating = who.rating ?? 4.9
   const whoHelpedCount = who.helpedCount ?? Math.max(3, whoValidators.length * 2)
+  const neighborRecord = INITIAL_NEIGHBORS.find((n) => n.name === who.name)
+  const knownCount = getKnownCount(neighborRecord || who)
+  const iKnow = isKnownPersonally(who.name)
   const canDecide = !helper && chat.step === 0 && !chat.declined
   const trusted = profile.trusted.split(/[,(]/)[0].trim() || 'seu contato de confiança'
   const trustedTel = phoneDigits(profile.trustedPhone)
@@ -129,7 +132,7 @@ export default function Chat({ chat, request }) {
             <div className="min-w-0 flex-1">
               <p className="text-sm font-bold text-secondary">Conheça quem quer ajudar antes de aceitar</p>
               <p className="mt-0.5 text-[0.85rem] leading-snug text-ink">
-                <b>{who.name}</b> • {who.place || 'Vizinhança próxima'} • ★ {String(whoRating).replace('.', ',')} • {whoValidators.length} {whoValidators.length === 1 ? 'validação' : 'validações'}
+                <b>{who.name}</b> • {who.place || 'Vizinhança próxima'} • ★ {String(whoRating).replace('.', ',')} • {who.f ? 'Conhecida' : 'Conhecido'} pessoalmente por <b>{knownCount}</b> {knownCount === 1 ? 'pessoa' : 'pessoas'}{iKnow ? ' (incluindo você)' : ''}
               </p>
             </div>
             <ChevronRight size={20} className="shrink-0 text-secondary" aria-hidden="true" />
@@ -354,6 +357,39 @@ export default function Chat({ chat, request }) {
             {who.bio && (
               <p className="text-[0.96rem] leading-relaxed text-ink">{who.bio}</p>
             )}
+
+            <div className="rounded-xl bg-secondary-soft p-3" style={{ border: 'var(--bw) solid rgb(var(--c-secondary) / .5)' }}>
+              <div className="flex items-center justify-between gap-2">
+                <p className="flex items-center gap-1.5 text-sm font-bold text-secondary">
+                  <UserCheck size={17} aria-hidden="true" />
+                  {who.f ? 'Conhecida' : 'Conhecido'} pessoalmente
+                </p>
+                <span className="pill pill-green font-bold">
+                  {knownCount} {knownCount === 1 ? 'pessoa' : 'pessoas'}
+                </span>
+              </div>
+              <p className="mt-1 text-xs leading-snug text-muted">
+                {iKnow
+                  ? `Inclui a sua confirmação pessoal sobre ${who.name}.`
+                  : `${knownCount} ${knownCount === 1 ? 'vizinho afirmou' : 'vizinhos afirmaram'} conhecer ${who.name} pessoalmente.`}
+              </p>
+              <button
+                type="button"
+                aria-pressed={iKnow}
+                onClick={() => toggleKnownPersonally(who.name)}
+                className={`btn mt-2.5 w-full !min-h-[2.6rem] text-xs ${iKnow ? 'btn-secondary' : 'btn-outline'}`}
+              >
+                {iKnow ? (
+                  <>
+                    <Check size={16} aria-hidden="true" /> Você conhece pessoalmente (tocar para remover)
+                  </>
+                ) : (
+                  <>
+                    <UserCheck size={16} aria-hidden="true" /> Também conheço {who.name.split(' ')[0]} pessoalmente
+                  </>
+                )}
+              </button>
+            </div>
 
             <div className="grid grid-cols-3 gap-2 text-center">
               <div className="rounded-xl bg-surface p-2.5" style={{ border: 'var(--bw) solid rgb(var(--c-line))' }}>
