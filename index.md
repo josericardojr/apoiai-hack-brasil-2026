@@ -1,3 +1,6 @@
+---
+---
+
 # 🤝 Apoiaí — Rede Intergeracional de Ajuda Mútua na Vizinhança
 
 > **Comunidade, auxílio mútuo e responsabilidade coletiva entre vizinhos — sem transações financeiras.**
