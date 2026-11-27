@@ -3,7 +3,7 @@ name: Publicar README no GitHub Pages
 on:
   push:
     branches: [ main ]
-    paths: [ 'README.md', '_config.yml' ]
+    paths: [ 'README.md' ]
   workflow_dispatch:
 
 permissions:
@@ -13,12 +13,36 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: |
-          mkdir site
-          printf -- "---\n---\n\n" | cat - README.md > site/index.md
-          if [ -f _config.yml ]; then cp _config.yml site/; fi
-      - uses: peaceiris/actions-gh-pages@v4
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Gerar HTML estilizado do README
+        run: |
+          mkdir -p site
+          npx --yes marked -i README.md -o body.html
+          cat << 'EOF' > site/index.html
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Apoiaí — Rede Intergeracional de Ajuda Mútua</title>
+            <link rel="stylesheet" href="https://cloudflare.com">
+            <style>
+              body { background-color: #ffffff; margin: 0; padding: 20px; }
+              .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 980px; margin: 0 auto; padding: 45px; }
+              @media (max-width: 767px) { .markdown-body { padding: 15px; } }
+            </style>
+          </head>
+          <body>
+            <article class="markdown-body">
+          EOF
+          cat body.html >> site/index.html
+          echo "</article></body></html>" >> site/index.html
+          touch site/.nojekyll
+
+      - name: Publicar na branch gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
