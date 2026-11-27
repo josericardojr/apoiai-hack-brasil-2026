@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           mkdir site
-          cp README.md site/index.md
+          printf -- "---\n---\n\n" | cat - README.md > site/index.md
           if [ -f _config.yml ]; then cp _config.yml site/; fi
       - uses: peaceiris/actions-gh-pages@v4
         with:
