@@ -143,8 +143,8 @@ Para entender o potencial do Apoiaí em poucos minutos, experimente estes fluxos
 
 ## 🚀 Como Executar o Projeto
 
-### 🌐 Acesso Online (Em breve)
-Em breve o aplicativo estará disponível em um domínio próprio para acesso direto pelo navegador do computador ou celular, sem necessidade de instalação.
+### 🌐 Acesso Online
+O aplicativo pode ser executado [online](https://apoiai.vercel.app/).
 
 ### 💻 Execução Local
 
