@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apoiaí — Rede Intergeracional de Ajuda Mútua</title>
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <style>
+    body { background-color: #ffffff; margin: 0; padding: 20px; }
+    .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 980px; margin: 0 auto; padding: 45px; }
+    @media (max-width: 767px) { .markdown-body { padding: 15px; } }
+  </style>
+</head>
+<body>
+  <article class="markdown-body">
+<h1>🤝 Apoiaí — Rede Intergeracional de Ajuda Mútua na Vizinhança</h1>
+<blockquote>
+<p><strong>Comunidade, auxílio mútuo e responsabilidade coletiva entre vizinhos — sem transações financeiras.</strong></p>
+</blockquote>
+<p><img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&amp;logoColor=white" alt="React">
+<img src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&amp;logoColor=white" alt="Vite">
+<img src="https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&amp;logoColor=white" alt="Tailwind CSS">
+<img src="https://img.shields.io/badge/Google_Hack_Brasil-2026-4285F4?logo=google&amp;logoColor=white" alt="Google Hack Brasil 2026">
+<img src="https://img.shields.io/badge/Status-Prot%C3%B3tipo_Funcional-2E7D32" alt="Status"></p>
+<blockquote>
+<p>🌐 <strong>Versão online (em breve):</strong> em breve o Apoiaí será publicado em um domínio próprio para que qualquer pessoa possa testar diretamente pelo navegador, sem precisar instalar nada. Enquanto isso, siga as <a href="#-como-executar-o-projeto">instruções de execução local</a>.</p>
+</blockquote>
+<hr>
+<h2>📌 Índice</h2>
+<ul>
+<li><a href="#-o-problema">O Problema</a></li>
+<li><a href="#-a-solu%C3%A7%C3%A3o-proposta">A Solução Proposta</a></li>
+<li><a href="#-como-funciona-fluxo">Como Funciona (Fluxo)</a></li>
+<li><a href="#-capturas-de-tela">Capturas de Tela</a></li>
+<li><a href="#-exemplos-pr%C3%A1ticos-de-uso">Exemplos Práticos de Uso</a></li>
+<li><a href="#-como-executar-o-projeto">Como Executar o Projeto</a></li>
+<li><a href="#-stack-e-estrutura-do-projeto">Stack e Estrutura do Projeto</a></li>
+<li><a href="#-escopo-do-prot%C3%B3tipo">Escopo do Protótipo</a></li>
+</ul>
+<hr>
+<h2>🧩 O Problema</h2>
+<p>Nas grandes cidades brasileiras, vivemos cada vez mais próximos fisicamente — nos mesmos prédios, condomínios e quarteirões —, mas cada vez mais desconectados socialmente. Esse distanciamento atinge com força especial pessoas idosas e moradores que vivem sozinhos, transformando a <strong>solidão</strong> e o <strong>isolamento social</strong> em um grave problema de saúde pública.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Indicador de Referência</th>
+<th align="left">Impacto</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>+26%</strong></td>
+<td align="left">Aumento no risco de mortalidade associado à solidão</td>
+</tr>
+<tr>
+<td align="left"><strong>+29%</strong></td>
+<td align="left">Aumento no risco de mortalidade associado ao isolamento social</td>
+</tr>
+<tr>
+<td align="left"><strong>+32%</strong></td>
+<td align="left">Aumento no risco de mortalidade em quem mora sozinho</td>
+</tr>
+<tr>
+<td align="left"><strong>16,8% / 31,7%</strong></td>
+<td align="left">Idosos brasileiros que relatam sentir solidão <em>sempre</em> (16,8%) ou <em>algumas vezes</em> (31,7%) — <em>ELSI-Brasil</em></td>
+</tr>
+</tbody></table>
+<p>No dia a dia, esse cenário se traduz em barreiras concretas:</p>
+<ul>
+<li><strong>Pequenas tarefas viram grandes obstáculos:</strong> configurar um aplicativo bancário sem medo de golpes, buscar um remédio na farmácia, trocar uma lâmpada queimada ou carregar sacolas do mercado podem ser desafios difíceis para quem tem mobilidade reduzida ou pouca familiaridade digital.</li>
+<li><strong>Falta de canais confiáveis na vizinhança:</strong> vizinhos dispostos a ajudar muitas vezes não sabem quem precisa de apoio a poucos metros de distância, e grupos genéricos de mensagens não oferecem organização, privacidade nem verificação de confiança.</li>
+<li><strong>Mercantilização do cuidado:</strong> aplicativos tradicionais cobram por cada favor ou serviço, excluindo quem não pode pagar e impedindo a criação de vínculos genuínos entre gerações.</li>
+<li><strong>Exclusão digital por falta de acessibilidade:</strong> fontes pequenas, baixo contraste e fluxos complexos afastam justamente o público idoso das soluções digitais.</li>
+</ul>
+<hr>
+<h2>💡 A Solução Proposta</h2>
+<p>O <strong>Apoiaí</strong> é uma rede hiperlocal de ajuda mútua e convivência intergeracional desenhada para condomínios e vizinhanças próximas (raio de <strong>200 m a 1 km</strong>), alinhada aos princípios da <strong>Política Nacional de Cuidados (Lei nº 15.069/2024)</strong>.</p>
+<p>Em vez de dinheiro, o Apoiaí promove <strong>reciprocidade, reconhecimento comunitário e encontros presenciais</strong>:</p>
+<ul>
+<li><strong>🔐 Entrada Simples com Google:</strong> autenticação híbrida com Google (modo real via <em>Google Identity Services</em> ou modo demonstração simulado), seguida de um cadastro curto com bloco, bairro e <strong>data de nascimento</strong> (o sistema calcula a idade automaticamente e não expõe a data aos vizinhos).</li>
+<li><strong>🎙️ Pedidos e Ofertas com Triagem Inteligente:</strong> o morador escreve ou <strong>fala</strong> o que precisa (ou pode oferecer). O sistema classifica automaticamente a <strong>categoria</strong>, o <strong>nível de urgência</strong>, a <strong>frequência</strong> (pontual ou recorrente) e a <strong>estimativa de horas solidárias</strong>.</li>
+<li><strong>🚨 Detecção de Emergências de Saúde:</strong> ao identificar sinais de risco clínico (como <em>&quot;dor no peito&quot;</em> ou <em>&quot;falta de ar&quot;</em>), o aplicativo exibe imediatamente um alerta orientando a ligar para <strong>SAMU 192</strong>, <strong>Bombeiros 193</strong> ou <strong>Polícia 190</strong>, deixando claro que o Apoiaí não substitui atendimento médico.</li>
+<li><strong>🏘️ Mural da Vizinhança e Rede de Confiança:</strong> pedidos e ofertas filtráveis por distância, tipo e categoria. Cada perfil exibe quantos vizinhos já o validaram e seus <strong>selos de confiança</strong> (<em>Pontual</em>, <em>Paciência Digital</em>, <em>Mão na Roda</em>, <em>Coração de Vizinho</em>, <em>Cuidador de Confiança</em> e <em>Gentil</em>).</li>
+<li><strong>💬 Chat Seguro com Privacidade:</strong> combina horário e local sem expor telefone ou endereço exato (números de telefone são mascarados automaticamente). Incentiva encontros em áreas comuns e oferece acionamento rápido de contato de confiança e emergência.</li>
+<li><strong>🛠️ Oficinas Intergeracionais e Banco de Objetos:</strong> agenda de encontros presenciais entre gerações (ex.: <em>Roda de Receitas</em>, <em>Oficina de Celular sem Medo</em>, <em>Horta Comunitária</em>) e empréstimo solidário de itens pouco usados (furadeira, escada, cadeira de rodas, andador, carrinho de feira).</li>
+<li><strong>⏱️ Banco de Horas Solidárias e Comércio Local:</strong> cada ajuda concluída registra horas solidárias, gera agradecimentos públicos no mural e desbloqueia benefícios em parceiros do bairro (padaria, farmácia, hortifruti).</li>
+<li><strong>♿ Acessibilidade Integrada:</strong> barra fixa no topo com ajuste de tamanho da fonte (<code>A-</code> / <code>A+</code>), modo de alto contraste, leitura em voz alta (<em>Text-to-Speech</em> em português) e entrada por voz.</li>
+</ul>
+<hr>
+<h2>🔄 Como Funciona (Fluxo)</h2>
+<pre><code class="language-mermaid">flowchart LR
+    A[&quot;🔐 Login com Google&lt;br/&gt;e cadastro rápido&quot;] --&gt; B[&quot;🎙️ Pedir ou Ofertar&lt;br/&gt;(texto ou voz)&quot;]
+    B --&gt; C{&quot;🚨 Emergência&lt;br/&gt;clínica?&quot;}
+    C -- &quot;Sim&quot; --&gt; D[&quot;📞 Alerta imediato&lt;br/&gt;SAMU 192 / 193 / 190&quot;]
+    C -- &quot;Não&quot; --&gt; E[&quot;🏘️ Publicação no&lt;br/&gt;Mural do Bairro&quot;]
+    E --&gt; F[&quot;💬 Chat Seguro&lt;br/&gt;(sem expor telefone/endereço)&quot;]
+    F --&gt; G[&quot;⭐ Conclusão, Selos&lt;br/&gt;e Horas Solidárias&quot;]
+</code></pre>
+<hr>
+<h2>📱 Capturas de Tela</h2>
+<p>O Apoiaí foi projetado com abordagem <em>mobile-first</em>, botões amplos e leitura confortável para todas as idades:</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/01-login.png" width="210" alt="Tela de Login com Google" /><br />
+      <b>1. Login com Google</b><br />
+      <sub>Entrada simples (real ou simulada)</sub>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/02-pedir.png" width="210" alt="Tela de Pedir Ajuda com Triagem" /><br />
+      <b>2. Pedir / Ofertar</b><br />
+      <sub>Triagem automática por texto ou voz</sub>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/03-mural.png" width="210" alt="Mural da Vizinhança" /><br />
+      <b>3. Mural do Bairro</b><br />
+      <sub>Pedidos próximos, filtros e selos</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/04-oficinas.png" width="210" alt="Oficinas e Banco de Objetos" /><br />
+      <b>4. Oficinas e Trocas</b><br />
+      <sub>Encontros intergeracionais e empréstimos</sub>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/05-perfil.png" width="210" alt="Perfil e Horas Solidárias" /><br />
+      <b>5. Perfil e Reciprocidade</b><br />
+      <sub>Horas solidárias, selos e parceiros</sub>
+    </td>
+    <td align="center">
+      <b>♿ Barra de Acessibilidade</b><br /><br />
+      <sub>Presente em todas as telas:<br/>• Fonte ampliável (<code>A-</code> / <code>A+</code>)<br/>• Alto contraste<br/>• Leitura em voz alta (TTS)</sub>
+    </td>
+  </tr>
+</table><hr>
+<h2>🧪 Exemplos Práticos de Uso</h2>
+<p>Para entender o potencial do Apoiaí em poucos minutos, experimente estes fluxos no aplicativo:</p>
+<h3>Exemplo 1 — Apoio Digital entre Gerações</h3>
+<ol>
+<li>Na aba <strong>Pedir / Ofertar</strong>, clique em um modelo pronto ou digite:<blockquote>
+<p><em>&quot;Preciso de ajuda para configurar o aplicativo do banco no meu celular novo hoje à tarde.&quot;</em></p>
+</blockquote>
+</li>
+<li>Clique em <strong>OK — analisar pedido</strong>. O sistema identifica a categoria <strong>Tecnologia</strong>, urgência <strong>Alta</strong>, prazo <strong>Hoje, à tarde</strong> e estimativa de <strong>30 min (0,5 h solidárias)</strong>.</li>
+<li>Clique em <strong>Publicar no mural do bairro</strong>. Em poucos segundos, um vizinho compatível responde no <strong>Chat seguro</strong> para combinar o encontro na área comum.</li>
+<li>No chat, experimente enviar um número de telefone (ex.: <code>11 99999-8888</code>) para ver o mascaramento automático de dados sensíveis em ação.</li>
+</ol>
+<h3>Exemplo 2 — Alerta de Emergência de Saúde</h3>
+<ol>
+<li>Na aba <strong>Pedir / Ofertar</strong>, digite:<blockquote>
+<p><em>&quot;Estou com dor no peito e falta de ar.&quot;</em></p>
+</blockquote>
+</li>
+<li>Clique em <strong>OK — analisar pedido</strong>. Um card vermelho de alerta aparece no topo com botão direto para ligar para o <strong>SAMU (192)</strong>, evitando que situações críticas dependam de ajuda informal.</li>
+</ol>
+<h3>Exemplo 3 — Convivência e Economia Solidária</h3>
+<ol>
+<li>Acesse a aba <strong>Mural</strong> e filtre por <strong>Ofertas</strong> ou por distância (<strong>Até 200m</strong> / <strong>Até 500m</strong> / <strong>Até 1 km</strong>). Toque em <strong>Posso ajudar</strong> em qualquer pedido (como o da Dona Helena ou do Sr. Antônio) para abrir o chat e concluir uma ajuda com avaliação e selo.</li>
+<li>Acesse <strong>Oficinas</strong> para confirmar presença em encontros como a <em>Roda de Receitas de Família</em> ou solicitar um item no <strong>Banco de Objetos</strong> (como uma escada ou cadeira de rodas dobrável).</li>
+<li>Acesse <strong>Meu perfil</strong> para ver seu banco de horas solidárias, quem validou sua conta, seu histórico e os descontos desbloqueados no comércio do bairro.</li>
+</ol>
+<hr>
+<h2>🚀 Como Executar o Projeto</h2>
+<h3>🌐 Acesso Online (Em breve)</h3>
+<p>Em breve o aplicativo estará disponível em um domínio próprio para acesso direto pelo navegador do computador ou celular, sem necessidade de instalação.</p>
+<h3>💻 Execução Local</h3>
+<h4>Pré-requisitos</h4>
+<ul>
+<li><a href="https://nodejs.org/">Node.js</a> versão <strong>18</strong> ou superior (inclui <code>npm</code>).</li>
+</ul>
+<h4>Passo a passo</h4>
+<pre><code class="language-bash"># 1. Clone o repositório
+git clone &lt;url-do-repositorio&gt;
+cd apoiai-hack-brasil-2026
+
+# 2. Instale as dependências
+npm install
+
+# 3. Inicie o servidor de desenvolvimento
+npm run dev
+</code></pre>
+<p>Após rodar <code>npm run dev</code>, abra no navegador:</p>
+<ul>
+<li><strong>No computador:</strong> <code>http://localhost:5173/</code></li>
+<li><strong>No celular (mesma rede Wi-Fi):</strong> use o endereço <code>Network</code> exibido no terminal (ex.: <code>http://192.168.x.x:5173/</code>).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Dica:</strong> no computador, o app já exibe uma barra lateral explicativa ao lado da prévia móvel, mas você também pode testar em tela cheia de celular usando o modo responsivo do navegador (<code>F12</code> → <code>Ctrl+Shift+M</code>).</p>
+</blockquote>
+<h4>🔐 Opcional: Ativar Login Real com Google</h4>
+<p>Sem nenhuma configuração extra, o Apoiaí inicia em <strong>modo demonstração</strong> com um seletor de contas Google simulado. Para testar com contas Google reais:</p>
+<ol>
+<li>Crie um <strong>ID do cliente OAuth (Aplicativo da Web)</strong> no <a href="https://console.cloud.google.com/apis/credentials">Google Cloud Console</a> e adicione <code>http://localhost:5173</code> em <em>Origens JavaScript autorizadas</em>.</li>
+<li>Copie o arquivo de exemplo e preencha o seu Client ID:<pre><code class="language-bash">cp .env.example .env.local
+</code></pre>
+<pre><code class="language-env">VITE_GOOGLE_CLIENT_ID=seu-client-id-aqui.apps.googleusercontent.com
+</code></pre>
+</li>
+<li>Reinicie o servidor (<code>npm run dev</code>).</li>
+</ol>
+<h4>Scripts disponíveis</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Comando</th>
+<th align="left">Descrição</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>npm run dev</code></td>
+<td align="left">Inicia o servidor local com hot-reload (<code>vite --host</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>npm run build</code></td>
+<td align="left">Gera a versão otimizada de produção na pasta <code>dist/</code></td>
+</tr>
+<tr>
+<td align="left"><code>npm run preview</code></td>
+<td align="left">Serve localmente o build gerado em <code>dist/</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🛠️ Stack e Estrutura do Projeto</h2>
+<ul>
+<li><strong>Frontend:</strong> React 18 + Vite 5</li>
+<li><strong>Estilização:</strong> Tailwind CSS 3 (com variáveis CSS para alto contraste e escala tipográfica)</li>
+<li><strong>Ícones:</strong> Lucide React</li>
+<li><strong>Acessibilidade e Voz:</strong> Web Speech API (<code>speechSynthesis</code> para leitura em voz alta e <code>SpeechRecognition</code> para ditado por voz)</li>
+</ul>
+<pre><code class="language-text">apoiai-hack-brasil-2026/
+├── docs/screenshots/      # Capturas de tela usadas neste README
+├── public/                # Recursos estáticos (favicon)
+├── src/
+│   ├── components/        # A11yBar, BottomNav, RequestCard, TrustGraph, UI
+│   ├── lib/               # auth.js, triage.js, useSpeech.js, format.js
+│   ├── screens/           # Login, Pedir, Mural, ChatList, Chat, Oficinas, Perfil, Conclusao
+│   ├── App.jsx            # Estado principal, navegação e fluxo de demonstração
+│   ├── data.js            # Dados iniciais de demonstração, selos, oficinas e estatísticas
+│   └── main.jsx           # Ponto de entrada e controle de sessão (AuthGate)
+├── .env.example           # Modelo de variáveis de ambiente (Google Client ID)
+└── package.json
+</code></pre>
+<hr>
+<h2>ℹ️ Escopo do Protótipo</h2>
+<p>Este repositório contém um <strong>protótipo funcional de frontend</strong> desenvolvido para o <strong>Google Hack Brasil 2026</strong>, sem servidor backend:</p>
+<ul>
+<li><strong>Dados de demonstração:</strong> pedidos, vizinhos, oficinas e objetos iniciais são carregados em memória a partir de <code>src/data.js</code> (ao recarregar a página, novos pedidos/mensagens voltam ao estado inicial).</li>
+<li><strong>Persistência local:</strong> apenas a sessão de login, os perfis cadastrados e as preferências de acessibilidade são salvos no <code>localStorage</code> do navegador.</li>
+<li><strong>Triagem e respostas:</strong> a triagem semântica opera localmente por regras e palavras-chave (preparada para integração futura com a API do <strong>Google Gemini</strong>), e as respostas dos vizinhos no chat são simuladas contextualmente para permitir testar todo o ciclo de ajuda de ponta a ponta.</li>
+</ul>
+</article></body></html>
